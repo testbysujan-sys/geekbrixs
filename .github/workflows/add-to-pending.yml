@@ -1,0 +1,50 @@
+name: Add to Pending
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  to-pending:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check for new submissions
+        run: |
+          files=$(git diff --name-only HEAD~1 HEAD | grep '^submissions/.*\.json' || true)
+
+          if [ -z "$files" ]; then
+            echo "No new submissions found"
+            exit 0
+          fi
+
+          mkdir -p data
+
+          if [ ! -f data/pending.json ]; then
+            echo "[]" > data/pending.json
+          fi
+
+          for file in $files; do
+            echo "Adding $file to pending.json"
+
+            block=$(cat "$file")
+            tmp=$(mktemp)
+
+            cat data/pending.json | jq --argjson obj "$block" '. + [$obj]' > "$tmp"
+            mv "$tmp" data/pending.json
+          done
+
+      - name: Commit pending file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet; then
+            exit 0
+          fi
+
+          git add data/pending.json
+          git commit -m "Added submission(s) to pending list"
+          git push
