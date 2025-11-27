@@ -1,0 +1,31 @@
+
+STEP 1: Fill this JSON template.
+
+STEP 2: Open the second tab (automatically opened) and upload your preview image.
+
+STEP 3: Copy the RAW image link from GitHub.
+
+STEP 4: Replace "PASTE_RAW_IMAGE_LINK_HERE" with the actual image link.
+
+--------------------------------------------------
+
+Create a new JSON file inside the /submissions folder.
+
+Example file name:
+my-awesome-block.json
+
+Use this format:
+
+{
+  "id": "unique-id",
+  "title": "Your block title",
+  "description": "Short description",
+  "category": "Buttons / Navbar / Cards / Layout",
+  "language": "HTML / CSS / JS / React",
+  "tags": ["tag1", "tag2"],
+  "preview": "PASTE_RAW_IMAGE_LINK_HERE",
+  "code": "PASTE YOUR CODE HERE",
+  "author": "your-github-username"
+}
+
+Then commit & create a Pull Request.
